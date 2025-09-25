@@ -1,7 +1,10 @@
+# syntax=docker/dockerfile:1
+
 FROM ubuntu:24.04 AS fse4ai_01
 
-
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
+
+LABEL org.opencontainers.image.source="https://github.com/skolai/fse4ai_2025"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Europe/Moscow
