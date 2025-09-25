@@ -2,7 +2,7 @@ FROM ubuntu:24.04 AS fse4ai_01
 
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
 
-LABEL org.opencontainers.image.source="https://github.com/muxas/fse4ai_2025"
+LABEL org.opencontainers.image.source="https://github.com/skolai/fse4ai_2025"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Europe/Moscow
@@ -21,4 +21,4 @@ RUN unzip -q practical_1_unix_local_machine_1.zip && \
 
 WORKDIR /workspace/practical_1_unix_local_machine_1
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "sleep", "infinity"]
