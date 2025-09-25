@@ -21,4 +21,4 @@ RUN unzip -q practical_1_unix_local_machine_1.zip && \
 
 WORKDIR /workspace/practical_1_unix_local_machine_1
 
-CMD ["/bin/bash", "sleep", "infinity"]
+CMD ["/bin/bash"]
