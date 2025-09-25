@@ -1,0 +1,46 @@
+# syntax=docker/dockerfile:1
+
+FROM ubuntu:24.04 AS fse4ai_04_server
+
+LABEL maintainer "Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
+
+ENV TZ=Europe/Moscow
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+    echo $TZ > /etc/timezone
+
+WORKDIR /workspace
+
+RUN apt update && \
+    apt install -y --no-install-recommends \
+    man-db \
+    unminimize \
+    vim \
+    tmux \
+    screen \
+    openssh-server \
+    rsync
+
+RUN yes | unminimize
+
+RUN useradd -m -d /home/student -s /bin/bash student
+
+RUN echo 'student:fse4ai' | chpasswd
+
+USER student
+
+WORKDIR /home/student
+
+ADD practical4_data_for_science.tar.xz .
+
+ADD practical4_logs.tar.xz .
+
+#RUN tar zxvf practical4_data_for_science.tar.xz
+
+#RUN tar zxvf practical4_logs.tar.xz
+
+USER root
+
+RUN service ssh start
+
+ENTRYPOINT ["/usr/sbin/sshd", "-D"]
