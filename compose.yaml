@@ -16,13 +16,13 @@ services:
     tty: true
 
   fse4ai_03_server:
-    image: fse4ai_03_server
+    image: ghcr.io/skolai/fse4ai_2025/remote_unix-server:26.09.01
     build:
       context: 03_remote_unix
       dockerfile: Dockerfile.server
 
   fse4ai_03_client:
-    image: fse4ai_03_client
+    image: ghcr.io/skolai/fse4ai_2025/remote_unix-client:26.09.01
     build:
       context: 03_remote_unix
       dockerfile: Dockerfile.client
