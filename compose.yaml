@@ -2,14 +2,14 @@ name: fse4ai
 
 services:
   fse4ai_01:
-    image: fse4ai_01
+    image: ghcr.io/skolai/fse4ai_2025_01_local_unix:25.09.3
     build:
       context: 01_local_unix
     stdin_open: true
     tty: true
 
   fse4ai_02:
-    image: fse4ai_02
+    image: ghcr.io/skolai/fse4ai_2025_02_local_unix:26.09.02
     build:
       context: 02_local_unix
     stdin_open: true
