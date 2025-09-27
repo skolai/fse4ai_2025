@@ -19,8 +19,6 @@ ADD 02_lab_tasks.ipynb 02_class_tasks.ipynb ./
 ADD practical2.zip ./
 
 RUN unzip -q practical2.zip && \
-    mv practical2/* . && \
-    rm -rf practical2 && \
     rm practical2.zip
 
 CMD ["/bin/bash"]
