@@ -20,7 +20,7 @@ ADD practical_1_unix_local_machine_1.zip ./
 
 RUN unzip -q practical_1_unix_local_machine_1.zip && \
     mv practical_1_unix_local_machine_1/* . && \
-    rmdir practical_1_unix_local_machine_1 && \
+    rm -rf practical_1_unix_local_machine_1 && \
     rm practical_1_unix_local_machine_1.zip
 
 CMD ["/bin/bash"]
