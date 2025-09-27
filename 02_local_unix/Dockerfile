@@ -11,11 +11,14 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /workspace
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ca-certificates && \
+    apt-get install -y --no-install-recommends unzip ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
 ADD 02_lab_tasks.ipynb 02_class_tasks.ipynb ./
 
 ADD practical2.zip ./
+
+RUN unzip -q practical2.zip && \
+    rm practical2.zip
 
 CMD ["/bin/bash"]
