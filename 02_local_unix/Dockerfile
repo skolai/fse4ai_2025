@@ -3,7 +3,6 @@
 FROM ubuntu:24.04 AS fse4ai_01
 
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
-
 LABEL org.opencontainers.image.source="https://github.com/skolai/fse4ai_2025"
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -12,15 +11,11 @@ ENV DEBIAN_FRONTEND=noninteractive \
 WORKDIR /workspace
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends unzip ca-certificates && \
+    apt-get install -y --no-install-recommends ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-COPY 02_lab_tasks.ipynb 02_class_tasks.ipynb /workspace/
-COPY practical2.zip /workspace/
+ADD 02_lab_tasks.ipynb 02_class_tasks.ipynb ./
 
-RUN unzip -q practical2.zip && \
-    rm practical2.zip
-WORKDIR /workspace/practical2.zip
+ADD practical2.zip ./
 
-# Default shell
 CMD ["/bin/bash"]
