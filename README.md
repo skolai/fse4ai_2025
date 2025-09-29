@@ -48,7 +48,7 @@ Here's how to run the container for each practical.
 This command downloads the pre-built image from the GitHub Container Registry.
 
 ```sh
-docker pull ghcr.io/skolai/fse4ai_2025_01_local_unix:27.09.04
+docker pull ghcr.io/skolai/fse4ai_2025_01_local_unix:29.09.01
 ```
 
 #### 2\. Run the Container
@@ -56,7 +56,7 @@ docker pull ghcr.io/skolai/fse4ai_2025_01_local_unix:27.09.04
 This command starts an interactive container from the image.
 
 ```sh
-docker run --rm -it ghcr.io/skolai/fse4ai_2025_01_local_unix:27.09.04
+docker run --rm -it ghcr.io/skolai/fse4ai_2025_01_local_unix:29.09.01
 ```
 
   * `--rm`: Automatically deletes the container when you exit.
