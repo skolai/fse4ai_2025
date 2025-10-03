@@ -1,31 +1,30 @@
 # syntax=docker/dockerfile:1
-# This Dockerfile is for the server container, which only needs to run SSH.
-# MODIFIED: Changed the base image to a more minimal one without Python.
 FROM debian:bookworm-slim
 
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
 ENV DEBIAN_FRONTEND=noninteractive
 
-
+# Base deps
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      openssh-server vim rsync && \
-    useradd -m -d /home/student -s /bin/bash student && \
-    echo 'student:pass1' | chpasswd && \
-    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-    mkdir -p /var/run/sshd && \
-    #  server's host keys
-    ssh-keygen -A && \
+      openssh-server vim rsync ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
-USER student
+# Create user but keep running as root (sshd must start as root)
+RUN useradd -m -d /home/student -s /bin/bash student && \
+    echo 'student:pass1' | chpasswd
+
+# Enable password auth, disallow root login, ensure runtime dir exists
+RUN sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/^#PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    mkdir -p /run/sshd
+
+# Put class files in place, owned by student
 WORKDIR /home/student
+ADD --chown=student:student practical4_data_for_science.tar.xz .
+ADD --chown=student:student practical4_logs.tar.xz .
 
-ADD practical4_data_for_science.tar.xz .
-ADD practical4_logs.tar.xz .
-
-# Expose the SSH port
 EXPOSE 22
 
-
-CMD ["/usr/sbin/sshd", "-D"]
+# Generate host keys at *container start* if missing, then run sshd in foreground (with logs to stderr)
+CMD ["/bin/sh","-lc","[ -f /etc/ssh/ssh_host_rsa_key ] || ssh-keygen -A; exec /usr/sbin/sshd -D -e"]

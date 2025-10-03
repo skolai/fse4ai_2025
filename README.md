@@ -88,7 +88,7 @@ This practical has two images: a server and a client. You'll likely run them in 
 
 ```sh
 # Pull the server image
-docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-server:03.10.05
+docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-server:03.10.06
 
 # Pull the client image
 docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-client:03.10.04

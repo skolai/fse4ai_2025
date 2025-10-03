@@ -16,10 +16,12 @@ services:
     tty: true
 
   fse4ai_03_server:
-    image: ghcr.io/skolai/fse4ai_2025/remote_unix-server:03.10.05
     build:
-      context: 03_remote_unix
+      context: . 
       dockerfile: Dockerfile.server
+    ports:
+      - "2222:22"     # optional: SSH from host on localhost:2222
+    restart: unless-stopped
 
   fse4ai_03_client:
     image: ghcr.io/skolai/fse4ai_2025/remote_unix-client:03.10.04
