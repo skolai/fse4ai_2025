@@ -100,6 +100,11 @@ You will need two terminals open.
 
   * **In Terminal 1 (Server):**
     ```sh
+    docker network create fse4ai-network
+    docker run -d --name fse4ai_03_server --network fse4ai-network ghcr.io/skolai/fse4ai_2025_remote_unix-server:03.10.06
+    docker run -d --name fse4ai_03_client --network fse4ai-network -p 8888:8888 ghcr.io/skolai/fse4ai_2025_remote_unix-client:03.10.04
+    docker exec -it fse4ai_03_client bash
+    idk
     docker compose up --build -d 
     docker exec -it fse4ai-fse4ai_03_client-1 bash
 
