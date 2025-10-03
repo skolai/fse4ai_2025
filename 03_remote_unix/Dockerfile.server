@@ -6,6 +6,7 @@ FROM debian:bookworm-slim
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
 ENV DEBIAN_FRONTEND=noninteractive
 
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       openssh-server vim rsync && \
@@ -13,6 +14,8 @@ RUN apt-get update && \
     echo 'student:pass1' | chpasswd && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
     mkdir -p /var/run/sshd && \
+    #  server's host keys
+    ssh-keygen -A && \
     rm -rf /var/lib/apt/lists/*
 
 USER student
@@ -24,6 +27,5 @@ ADD practical4_logs.tar.xz .
 # Expose the SSH port
 EXPOSE 22
 
-# The command now only starts the SSH service and then waits indefinitely.
-# This prevents the container from exiting.
+
 CMD ["/usr/sbin/sshd", "-D"]
