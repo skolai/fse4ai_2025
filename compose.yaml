@@ -2,27 +2,27 @@ name: fse4ai
 
 services:
   fse4ai_01:
-    image: ghcr.io/skolai/fse4ai_2025_01_local_unix:27.09.04
+    image: ghcr.io/skolai/fse4ai_2025_01_local_unix:29.09.01
     build:
       context: 01_local_unix
     stdin_open: true
     tty: true
 
   fse4ai_02:
-    image: ghcr.io/skolai/fse4ai_2025_02_local_unix:27.09.05
+    image: ghcr.io/skolai/fse4ai_2025_02_local_unix:01.10.01
     build:
       context: 02_local_unix
     stdin_open: true
     tty: true
 
   fse4ai_03_server:
-    image: ghcr.io/skolai/fse4ai_2025/remote_unix-server:26.09.01
+    image: ghcr.io/skolai/fse4ai_2025/remote_unix-server:03.10.01
     build:
       context: 03_remote_unix
       dockerfile: Dockerfile.server
 
   fse4ai_03_client:
-    image: ghcr.io/skolai/fse4ai_2025/remote_unix-client:26.09.01
+    image: ghcr.io/skolai/fse4ai_2025/remote_unix-client:03.10.01
     build:
       context: 03_remote_unix
       dockerfile: Dockerfile.client

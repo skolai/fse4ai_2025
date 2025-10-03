@@ -88,10 +88,10 @@ This practical has two images: a server and a client. You'll likely run them in 
 
 ```sh
 # Pull the server image
-docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-server:01.10.01
+docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-server:03.10.01
 
 # Pull the client image
-docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-client:01.10.01
+docker pull ghcr.io/skolai/fse4ai_2025_remote_unix-client:03.10.01
 ```
 
 #### 2\. Run the Containers
@@ -100,11 +100,11 @@ You will need two terminals open.
 
   * **In Terminal 1 (Server):**
     ```sh
-    docker run --rm -it ghcr.io/skolai/fse4ai_2025_remote_unix-server:01.10.01
+    docker run --rm -it ghcr.io/skolai/fse4ai_2025_remote_unix-server:03.10.01
     ```
   * **In Terminal 2 (Client):**
     ```sh
-    docker run --rm -it ghcr.io/skolai/fse4ai_2025_remote_unix-client:01.10.01
+    docker run --rm -it ghcr.io/skolai/fse4ai_2025_remote_unix-client:03.10.01
     ```
 
 -----
