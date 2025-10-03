@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11-slim-bookworm AS fse4ai_01_client
+# This Dockerfile is for the client container that runs Jupyter.
+FROM python:3.11-slim-bookworm
 
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
 ENV DEBIAN_FRONTEND=noninteractive
@@ -13,15 +14,14 @@ RUN apt-get update && \
     echo 'student:fse4ai' | chpasswd && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Jupyter
 RUN pip install --no-cache-dir notebook ipykernel
 
 USER student
 WORKDIR /home/student
 
-# Add the notebook files directly into the image
 ADD 03_class_tasks.ipynb .
 ADD 03_lab_tasks.ipynb .
 
 EXPOSE 8888
+# Start the Jupyter Notebook server
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''"]
