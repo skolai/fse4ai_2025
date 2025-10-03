@@ -1,26 +1,18 @@
 # syntax=docker/dockerfile:1
-
 FROM python:3.11-slim-bookworm AS fse4ai_01_client
 
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    tzdata \
-    man-db \
-    unzip \
-    sed \
-    vim \
-    ssh \
-    rsync && \
-    \
+      tzdata man-db unzip sed vim ssh rsync && \
     ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
     echo "Europe/Moscow" > /etc/timezone && \
-
+    useradd -m -d /home/student -s /bin/bash student && \
+    echo 'student:fse4ai' | chpasswd && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /workspace
-
+USER student
+WORKDIR /home/student
 CMD ["/bin/bash"]

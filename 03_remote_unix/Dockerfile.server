@@ -1,35 +1,26 @@
 # syntax=docker/dockerfile:1
-
 FROM python:3.11-slim-bookworm AS fse4ai_04_server
 
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    tzdata \
-    man-db \
-    vim \
-    tmux \
-    screen \
-    openssh-server \
-    rsync && \
-    \
+      tzdata man-db vim tmux screen openssh-server rsync && \
     ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
     echo "Europe/Moscow" > /etc/timezone && \
-    \
     useradd -m -d /home/student -s /bin/bash student && \
     echo 'student:fse4ai' | chpasswd && \
     pip install --no-cache-dir notebook ipykernel && \
-    \
     rm -rf /var/lib/apt/lists/*
 
+USER student
 WORKDIR /home/student
 
-ADD --chown=student:student practical4_data_for_science.tar.xz .
-ADD --chown=student:student practical4_logs.tar.xz .
+ADD 03_class_tasks.ipynb .
+ADD 03_lab_tasks.ipynb .
+ADD practical4_data_for_science.tar.xz .
+ADD practical4_logs.tar.xz .
 
-USER student
 EXPOSE 8888
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--no-browser"]
