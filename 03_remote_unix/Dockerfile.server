@@ -4,23 +4,28 @@ FROM python:3.11-slim-bookworm AS fse4ai_04_server
 LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Install server tools including openssh-server
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-      tzdata man-db vim tmux screen openssh-server rsync && \
-    ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && \
-    echo "Europe/Moscow" > /etc/timezone && \
+      openssh-server vim rsync && \
     useradd -m -d /home/student -s /bin/bash student && \
-    echo 'student:fse4ai' | chpasswd && \
-    pip install --no-cache-dir notebook ipykernel && \
+    # Set the new password to 'pass1'
+    echo 'student:pass1' | chpasswd && \
+    # Configure SSH to allow password authentication
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    # Create a directory for the SSH service to run
+    mkdir -p /var/run/sshd && \
     rm -rf /var/lib/apt/lists/*
 
 USER student
 WORKDIR /home/student
 
-ADD 03_class_tasks.ipynb .
-ADD 03_lab_tasks.ipynb .
+# Add the data files to the server
 ADD practical4_data_for_science.tar.xz .
 ADD practical4_logs.tar.xz .
 
-EXPOSE 8888
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--no-browser"]
+# Expose the SSH port
+EXPOSE 22
+
+# This command starts the SSH server in the background and then runs jupyter
+CMD service ssh start && jupyter notebook --ip=0.0.0.0 --port=8888 --allow-root --no-browser --NotebookApp.token=''
