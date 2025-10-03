@@ -13,6 +13,15 @@ RUN apt-get update && \
     echo 'student:fse4ai' | chpasswd && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Jupyter
+RUN pip install --no-cache-dir notebook ipykernel
+
 USER student
 WORKDIR /home/student
-CMD ["/bin/bash"]
+
+# Add the notebook files directly into the image
+ADD 03_class_tasks.ipynb .
+ADD 03_lab_tasks.ipynb .
+
+EXPOSE 8888
+CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=''"]
