@@ -26,4 +26,4 @@ EXPOSE 22
 
 # The command now only starts the SSH service and then waits indefinitely.
 # This prevents the container from exiting.
-CMD ["/bin/sh", "-c", "service ssh start && tail -f /dev/null"]
+CMD ["/usr/sbin/sshd", "-D"]
