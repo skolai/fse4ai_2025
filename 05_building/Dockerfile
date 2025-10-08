@@ -17,6 +17,7 @@ RUN apt-get update && \
         libgmp-dev \
         libmpfr-dev \
         libboost-thread-dev \
+        libcgal-dev \
         unzip \
         ca-certificates && \
     \
