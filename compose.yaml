@@ -32,7 +32,7 @@ services:
     tty: true
 
   fse4ai_05:
-    image: ghcr.io/skolai/fse4ai_2025_05_building:08.10.01
+    image: ghcr.io/skolai/fse4ai_2025_05_building:08.10.05
     build:
       context: 05_building
     stdin_open: true

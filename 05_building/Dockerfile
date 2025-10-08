@@ -18,8 +18,11 @@ RUN apt-get update && \
         libmpfr-dev \
         libboost-thread-dev \
         unzip \
-    && pip install --no-cache-dir notebook ipykernel \
-    && rm -rf /var/lib/apt/lists/*
+        ca-certificates && \
+    \
+    pip install --no-cache-dir notebook ipykernel && \
+    \
+    rm -rf /var/lib/apt/lists/*
 
 ADD practical_5_building_software.zip .
 ADD 05_lab_tasks.ipynb 05_class_tasks.ipynb ./
