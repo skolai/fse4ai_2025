@@ -1,38 +1,41 @@
 # syntax=docker/dockerfile:1.4
 
-FROM python:3.11-slim-bookworm
+# Start from the official Jupyter image which is pre-configured and stable.
+FROM jupyter/base-notebook:python-3.11
 
-LABEL maintainer="Aleksandr Mikhalev <al.mikhalev@skoltech.ru>"
-LABEL org.opencontainers.image.source="https://github.com/skolai/fse4ai_2025"
+# Switch to the root user to install system-level packages.
+USER root
 
+# Set environment variables to prevent interactive prompts during installation.
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=Europe/Moscow
 
-WORKDIR /workspace
-
+# Install all necessary system dependencies for C++ development with CGAL.
+# This includes the compiler, build tools, and required libraries like Boost.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         build-essential \
         cmake \
+        libcgal-dev \
         libgmp-dev \
         libmpfr-dev \
         libboost-thread-dev \
-        libcgal-dev \
         unzip \
-        ca-certificates && \
-    \
-    pip install --no-cache-dir notebook ipykernel && \
-    \
-    rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
-ADD practical_5_building_software.zip .
-ADD 05_lab_tasks.ipynb 05_class_tasks.ipynb ./
+# Switch back to the standard, non-root user for security and compatibility.
+USER ${NB_UID}
 
+# Copy your project files into the user's home directory and set ownership.
+COPY --chown=${NB_UID}:${NB_GID} practical_5_building_software.zip .
+COPY --chown=${NB_UID}:${NB_GID} 05_lab_tasks.ipynb 05_class_tasks.ipynb ./
+
+# Unzip the source code into the current directory and clean up the zip file.
 RUN unzip -q practical_5_building_software.zip && \
     mv practical_5_building_software/* . && \
     rm -rf practical_5_building_software && \
     rm practical_5_building_software.zip
 
-EXPOSE 8888
+# The base image already configures and runs the Jupyter notebook,
+# so we don't need to add EXPOSE or CMD instructions.
 
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--port=8888", "--allow-root", "--no-browser"]
